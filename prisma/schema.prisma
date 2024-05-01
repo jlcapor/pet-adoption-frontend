@@ -1,0 +1,202 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Account {
+    id                String  @id @default(cuid())
+    userId            String
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String? // @db.Text
+    access_token      String? // @db.Text
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String? // @db.Text
+    session_state     String?
+    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([provider, providerAccountId])
+    @@map("accounts")
+}
+
+model Session {
+    id           String   @id @default(cuid())
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@map("sessions")
+}
+
+model User {
+    id             String    @id @default(cuid())
+    name           String?
+    email          String?   @unique
+    emailVerified  DateTime?
+    image          String?
+    hashedPassword String?
+    roleId         String    @map("role_id") @db.Uuid
+    confirmed      Boolean   @default(false)
+    createdAt      DateTime  @default(now())
+    updatedAt      DateTime  @updatedAt
+    role           Role      @relation(fields: [roleId], references: [id])
+    accounts       Account[]
+    sessions       Session[]
+    shelters       Shelter[]
+
+    @@map("users")
+}
+
+model Role {
+    id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    name      String   @unique
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+    users     User[]
+
+    @@map("roles")
+}
+
+model VerificationToken {
+    identifier String
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
+}
+
+model Shelter {
+    id          String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    name        String?
+    email       String?
+    phoneNumber String?
+    address     String?
+    description String?
+    image_url   String?
+    active      Boolean @default(true)
+    userId      String
+    user        User    @relation(fields: [userId], references: [id])
+    pets        Pet[]
+
+    @@map("shelters")
+}
+
+model Pet {
+    id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    name          String
+    age           Int
+    gender_id     Int
+    height        String? //Altura
+    weight        String? //Peso
+    pet_size_id   Int //  Tamaño mascota
+    life_span     String?
+    color         String?
+    description   String?  @db.Text
+    health_status String?
+    image         String?
+    pet_type_id   String?  @map("pet_type_id") @db.Uuid
+    breed_id      String?  @map("breed_id") @db.Uuid
+    shelterId     String   @map("shelter_id") @db.Uuid
+    active        Boolean  @default(true)
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @default(now()) @updatedAt
+
+    petGender    PetGender        @relation(fields: [gender_id], references: [id])
+    petSize      PetSize          @relation(fields: [pet_size_id], references: [id])
+    petType      PetType?         @relation(fields: [pet_type_id], references: [id])
+    breed        Breed?           @relation(fields: [breed_id], references: [id])
+    shelter      Shelter          @relation(fields: [shelterId], references: [id])
+    temperaments PetTemperament[]
+    petVaccines  PetVaccine[]
+
+    @@map("pets")
+}
+
+model PetImage {
+    id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    petId String @map("pet_id") @db.Uuid
+    url_image String
+}
+
+model PetVaccine {
+    vaccine_id Int
+    pet_id     String @map("pet_type_id") @db.Uuid
+
+    vaccine Vaccine @relation(fields: [vaccine_id], references: [id])
+    pet     Pet     @relation(fields: [pet_id], references: [id])
+
+    @@id([vaccine_id, pet_id])
+    @@map("pet_vaccines")
+}
+
+model Vaccine {
+    id          Int          @id @default(autoincrement())
+    name        String
+    petVaccines PetVaccine[]
+
+    @@map("vaccines")
+}
+
+model Temperament {
+    id        String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    name      String
+    createdAt DateTime         @default(now())
+    updatedAt DateTime         @default(now()) @updatedAt
+    pets      PetTemperament[]
+
+    @@map("temperaments")
+}
+
+model PetTemperament {
+    petId         String      @map("pet_id") @db.Uuid
+    pet           Pet         @relation(fields: [petId], references: [id])
+    temperamentId String      @map("temp_id") @db.Uuid
+    temp          Temperament @relation(fields: [temperamentId], references: [id])
+    createdAt     DateTime    @default(now())
+
+    @@id([petId, temperamentId])
+    @@map("PetTemperaments")
+}
+
+model PetType {
+    id     String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    name   String
+    pets   Pet[]
+    breeds Breed[]
+
+    @@map("petTypes")
+}
+
+model Breed {
+    id        String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    name      String
+    petTypeId String  @map("pet_type_id") @db.Uuid
+    petType   PetType @relation(fields: [petTypeId], references: [id])
+    Pets      Pet[]
+
+    @@map("breeds")
+}
+
+model PetGender {
+    id   Int     @id @default(autoincrement())
+    name String?
+    Pets Pet[]
+
+    @@map("genders")
+}
+
+model PetSize {
+    id   Int     @id @default(autoincrement())
+    name String?
+    Pet  Pet[]
+
+    @@map("sizes")
+}
