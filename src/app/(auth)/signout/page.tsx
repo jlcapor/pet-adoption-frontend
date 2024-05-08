@@ -1,4 +1,4 @@
-import { LogOutButtons } from "@/components/auth/LogOutButtons";
+import { LogOutButtons } from "../_components/LogOutButtons";
 import { PageHeader, PageHeaderDescription, PageHeaderHeading } from "@/components/page-header";
 
 export default function SignOutPage() {

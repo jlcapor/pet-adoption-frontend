@@ -1,39 +1,32 @@
-import {
+import  {
     Home,
-    Bell,
     PawPrint,
     TentTree,
-    Youtube,
     Github,
     Linkedin,
-    Dog,
-    X,
     User,
     Sun,
-    LucideIcon,
+    // type LucideIcon,
     Moon,
+    Pencil
   } from "lucide-react"
 
   
-  export type Icon = LucideIcon;
+  // export type Icon = LucideIcon;
 
   type IconProps = React.HTMLAttributes<SVGElement>
   
   export const Icons = {
     home: Home,
-    bell: Bell,
     pet: PawPrint,
     shelter:TentTree,
+    user: User,
     github: Github,
     linkedin: Linkedin,
-    youtube:Youtube,
-    close: X,
-    user: User,
     pawPrint: PawPrint,
-    dog: Dog,
     sun: Sun,
     moon: Moon,
-    
+    edit: Pencil,
     spinner: (props: IconProps) => (
       <svg
       {...props}

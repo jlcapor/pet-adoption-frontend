@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils"
-import { SidebarNavItem } from "@/types"
+import type { SidebarNavItem } from "@/types"
 import Link from "next/link"
 import { ChevronLeftIcon } from "@radix-ui/react-icons"
 import { useSelectedLayoutSegment } from "next/navigation"

@@ -8,7 +8,9 @@ interface SidebarContextProps {
 
 export const SidebarContext = React.createContext<SidebarContextProps>({
   open: false,
-  setOpen: () => {},
+  setOpen: () => {
+    throw new Error("SidebarContext not initialized")
+  },
 })
 
 export const SidebarProvider = ({ children }: React.PropsWithChildren) => {

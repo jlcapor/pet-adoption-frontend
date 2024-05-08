@@ -41,10 +41,6 @@ export const siteConfig = {
         href: "https://www.linkedin.com/in/jose-luis-capote-dsw/",
         icon: Icons.linkedin
     },
-    {
-        title: "Youtube",
-        href: "#",
-        icon: Icons.youtube
-    },
+    
   ] satisfies MainNavItem[],
 };

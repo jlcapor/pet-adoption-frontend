@@ -1,10 +1,10 @@
 import SiteFooter from "@/components/layouts/site-footer";
 import SiteHeader from "@/components/layouts/site-header";
-import { getSession } from "@/lib/session";
+import getCurrentUser from "@/lib/actions/getCurrentUser";
 
 
 export default async function PetAdoptionLayout({ children }: React.PropsWithChildren ) {
-    const session = await getSession()
+    const session = await getCurrentUser()
     
     return (
         <div className="relative flex min-h-screen flex-col">

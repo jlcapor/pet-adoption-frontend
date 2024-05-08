@@ -12,16 +12,16 @@ import {
 import { cn } from "@/lib/utils";
 import { DashboardIcon, ExitIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
-import { Session } from "next-auth";
 import { UserAvatar } from "../UserAvatar";
+import type { UserWithRole } from "@/types";
 
 
 
 interface AuthDropdownProps extends ButtonProps {
-  session: Session | null
+  session: UserWithRole | null
 }
 export default function AuthDropdown({session, className, ...props}: AuthDropdownProps) {
-  return (
+    return (
     <>
       {session ? (
           <DropdownMenu>
@@ -32,7 +32,7 @@ export default function AuthDropdown({session, className, ...props}: AuthDropdow
                 {...props}
               >
                 <UserAvatar
-                  user={{ name: session.user.name || null, image: session.user.image || null }}
+                  user={{ name: session.name , image: session.image }}
                   className="h-10 w-10"
                 />
               </Button>
@@ -41,16 +41,16 @@ export default function AuthDropdown({session, className, ...props}: AuthDropdow
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1 leading-none">
                   <p className="text-sm font-medium leading-none">
-                    {session.user.name}
+                    {session.name}
                   </p>
                   <p className="text-xs leading-none text-muted-foreground">
-                    {session.user.email}
+                    {session.email}
                   </p>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
-                  <Link href="/dashboard/shelter">
+                  <Link href="/dashboard/profile">
                     <DashboardIcon className="mr-2 size-4" aria-hidden="true" />
                     Dashboard
                     <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>

@@ -4,9 +4,15 @@ import { type SidebarNavItem } from "@/types"
 export const shelterDashboardConfig = {
     sidebarNav: [
        {
-        title: "Refugio",
-        href: "/dashboard/shelter",
-        icon: Icons.shelter,
+        title: "Perfil",
+        href: "/dashboard/profile",
+        icon: Icons.user,
+        items: [],
+       },
+       {
+        title: "Mascotas",
+        href: "/dashboard/pets",
+        icon: Icons.pawPrint,
         items: [],
        },
        

@@ -4,12 +4,12 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
 import SessionWrapper from "@/app/SessionWrapper";
 import { cn } from "@/lib/utils"
-import { fontHeading } from "@/lib/fonts";
+import { fontHeading, fontMono, fontSans } from "@/lib/fonts";
 import { GeistMono } from "geist/font/mono"
 import { GeistSans } from "geist/font/sans"
 import { siteConfig } from "@/config/site";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Viewport } from "next";
+import type { Viewport } from "next";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 
 
@@ -39,10 +39,13 @@ export default async function RootLayout({
       <html lang="en" suppressHydrationWarning>
         <body 
           className={cn(
+            // "min-h-screen bg-background font-sans antialiased",
             "min-h-screen bg-background font-sans antialiased",
             GeistSans.variable,
             GeistMono.variable,
-            fontHeading.variable
+            fontHeading.variable,
+            fontSans.variable,
+            fontMono.variable
           )}
         >
           <ThemeProvider

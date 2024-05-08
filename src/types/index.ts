@@ -1,3 +1,4 @@
+import type { Pet, Role, Shelter, User } from "@prisma/client";
 
 export interface NavItem {
   title: string;
@@ -30,5 +31,22 @@ export interface FooterItem {
 export type MainNavItem = NavItemWithOptionalChildren;
 
 export type SidebarNavItem = NavItemWithChildren;
+
+
+export type ShelterWithPets = Shelter & {
+  pets: Pet[];
+}
+
+export type PickedPet = Pick<Pet, "id" | "name">
+
+export type PickedShelter = Shelter & {
+  pets: PickedPet[]
+}
+
+
+export type UserWithRole = Pick<User, 'id' | 'name' | 'email' | 'image'> & {
+  role: Role
+}
+
 
 

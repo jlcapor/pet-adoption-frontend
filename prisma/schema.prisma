@@ -74,23 +74,27 @@ model VerificationToken {
 }
 
 model Shelter {
-    id          String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    name        String?
-    email       String?
-    phoneNumber String?
-    address     String?
-    description String?
-    image_url   String?
-    active      Boolean @default(true)
-    userId      String
-    user        User    @relation(fields: [userId], references: [id])
-    pets        Pet[]
+    id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    name         String
+    email        String
+    phoneNumber  String
+    address      String
+    description  String
+    image_url    String?
+    active       Boolean    @default(true)
+    userId       String     @map("user_id")
+    departmentId Int        @map("department_id")
+    cityId       Int        @map("city_id")
+    user         User       @relation(fields: [userId], references: [id])
+    department   Department @relation(fields: [departmentId], references: [id])
+    city         City       @relation(fields: [cityId], references: [id])
+    pets         Pet[]
 
     @@map("shelters")
 }
 
 model Pet {
-    id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    id            String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
     name          String
     age           Int
     gender_id     Int
@@ -99,50 +103,29 @@ model Pet {
     pet_size_id   Int //  Tamaño mascota
     life_span     String?
     color         String?
-    description   String?  @db.Text
+    description   String?          @db.Text
     health_status String?
     image         String?
-    pet_type_id   String?  @map("pet_type_id") @db.Uuid
-    breed_id      String?  @map("breed_id") @db.Uuid
-    shelterId     String   @map("shelter_id") @db.Uuid
-    active        Boolean  @default(true)
-    createdAt     DateTime @default(now())
-    updatedAt     DateTime @default(now()) @updatedAt
-
-    petGender    PetGender        @relation(fields: [gender_id], references: [id])
-    petSize      PetSize          @relation(fields: [pet_size_id], references: [id])
-    petType      PetType?         @relation(fields: [pet_type_id], references: [id])
-    breed        Breed?           @relation(fields: [breed_id], references: [id])
-    shelter      Shelter          @relation(fields: [shelterId], references: [id])
-    temperaments PetTemperament[]
-    petVaccines  PetVaccine[]
+    pet_type_id   String?          @map("pet_type_id") @db.Uuid
+    breed_id      String?          @map("breed_id") @db.Uuid
+    shelterId     String           @map("shelter_id") @db.Uuid
+    active        Boolean          @default(true)
+    createdAt     DateTime         @default(now())
+    updatedAt     DateTime         @default(now()) @updatedAt
+    petGender     PetGender        @relation(fields: [gender_id], references: [id])
+    petSize       PetSize          @relation(fields: [pet_size_id], references: [id])
+    petType       PetType?         @relation(fields: [pet_type_id], references: [id])
+    breed         Breed?           @relation(fields: [breed_id], references: [id])
+    shelter       Shelter          @relation(fields: [shelterId], references: [id])
+    temperaments  PetTemperament[]
 
     @@map("pets")
 }
 
 model PetImage {
-    id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    petId String @map("pet_id") @db.Uuid
+    id        String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    petId     String @map("pet_id") @db.Uuid
     url_image String
-}
-
-model PetVaccine {
-    vaccine_id Int
-    pet_id     String @map("pet_type_id") @db.Uuid
-
-    vaccine Vaccine @relation(fields: [vaccine_id], references: [id])
-    pet     Pet     @relation(fields: [pet_id], references: [id])
-
-    @@id([vaccine_id, pet_id])
-    @@map("pet_vaccines")
-}
-
-model Vaccine {
-    id          Int          @id @default(autoincrement())
-    name        String
-    petVaccines PetVaccine[]
-
-    @@map("vaccines")
 }
 
 model Temperament {
@@ -199,4 +182,23 @@ model PetSize {
     Pet  Pet[]
 
     @@map("sizes")
+}
+
+model City {
+    id           Int         @id @default(autoincrement())
+    name         String
+    departmentId Int         @map("department_id")
+    city         Department? @relation(fields: [departmentId], references: [id])
+    shelters     Shelter[]
+
+    @@map("cities")
+}
+
+model Department {
+    id       Int       @id @default(autoincrement())
+    name     String
+    cities   City[]
+    shelters Shelter[]
+
+    @@map("departments")
 }

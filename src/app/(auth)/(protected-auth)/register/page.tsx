@@ -1,15 +1,12 @@
-import UserRegisterForm from '@/components/auth/RegisterForm'
-import { getSession } from '@/lib/session';
-import { redirect } from 'next/navigation';
+import RegisterForm from '../../_components/RegisterForm';
 import React from 'react'
-import Link from 'next/link';
 
 export default async function RegisterPage() {
-  const user =  await getSession()
+  // const user =  await getSession()
 
-  if (user) {
-    redirect("/")
-  }
+  // if (user) {
+  //   redirect("/")
+  // }
 
   return (
     <div className="flex pt-8 items-center justify-center p-3">
@@ -17,7 +14,7 @@ export default async function RegisterPage() {
         <div className="flex flex-col items-center justify-center space-y-3 border-b border-gray-200 px-4 py-6 pt-8 text-center sm:px-16">
           <h1 className="text-3xl font-semibold">Crear Cuenta</h1>
         </div>
-        <UserRegisterForm/>
+        <RegisterForm/>
       </div>
     </div>
   )

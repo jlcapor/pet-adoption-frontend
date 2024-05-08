@@ -5,9 +5,10 @@ import MainNav from './main-nav'
 import { siteConfig } from '@/config/site'
 import AuthDropdown from './auth-dropdown'
 import { MobileNav } from './mobile-nav'
+import type { UserWithRole } from '@/types'
 
 type SiteHeaderProps = {
-  session: Session | null
+  session: UserWithRole | null
 }
 export default function SiteHeader({ session }: SiteHeaderProps) {
  

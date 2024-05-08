@@ -3,15 +3,6 @@ import bcrypt from "bcrypt";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 
-type CreateUserInput = {
-  name: string;
-  email: string;
-  password: string;
-  role: string;
-};
-
-
-
 export const userRouter = createTRPCRouter({
   create: publicProcedure
     .input(
@@ -22,7 +13,7 @@ export const userRouter = createTRPCRouter({
         role: z.string(),
       }),
     )
-    .mutation(async ({ ctx, input }: {ctx: any, input: CreateUserInput }) => {
+    .mutation(async ({ ctx, input }) => {
       const existingUser = await ctx.db.user.findFirst({
         where: {
           email: input.email,
@@ -53,7 +44,7 @@ export const userRouter = createTRPCRouter({
           name: input.name,
           email: input.email,
           hashedPassword,
-          roleId: role?.id,
+          roleId: role.id,
         },
       });
     }),

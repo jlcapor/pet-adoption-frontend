@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter, useSelectedLayoutSegment } from "next/navigation"
-import { Tabs, TabsList, TabsTrigger } from "./ui/tabs"
+import { Tabs, TabsList, TabsTrigger } from "@radix-ui/react-tabs"
 import { ScrollArea } from "./ui/scroll-area"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
@@ -29,7 +29,7 @@ export default function ShelterTabs({shelterId}: ShelterTabsProps) {
   return (
     <Tabs
       defaultValue={tabs.find((tab) => tab.isActive)?.href ?? tabs[0]?.href}
-      className="sticky top-0 z-30 size-full overflow-auto bg-background"
+      className="sticky top-0 z-30 size-full overflow-auto bg-background px-1"
       onValueChange={(value) => router.push(value)}
     >
       <ScrollArea
@@ -43,7 +43,7 @@ export default function ShelterTabs({shelterId}: ShelterTabsProps) {
               role="none"
               key={tab.href}
               className={cn(
-                "border-transparent py-1.5",
+                "border-b-2 border-transparent py-1.5",
                 tab.isActive && "border-foreground"
               )}
             >
@@ -60,8 +60,8 @@ export default function ShelterTabs({shelterId}: ShelterTabsProps) {
             </div>
           ))}
         </TabsList>
+        {/* <Separator className="w-full"/> */}
       </ScrollArea>
-      
     </Tabs>
   )
 }
